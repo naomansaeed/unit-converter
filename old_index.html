@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #5F3BFE;
+            --light-bg: #f8f9fa;
+            --light-card: #ffffff;
+            --light-text: #333333;
+            --light-border: #e0e0e0;
+            --dark-bg: #121212;
+            --dark-card: #1e1e1e;
+            --dark-text: #f0f0f0;
+            --dark-border: #333333;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--light-text);
+            min-height: 100vh;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--dark-text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), #a07cff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background-color: rgba(95, 59, 254, 0.1);
+        }
+
+        .converter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .input-section {
+            background-color: var(--light-card);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .input-section {
+            background-color: var(--dark-card);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--light-border);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        body.dark-mode input {
+            background-color: var(--dark-card);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(95, 59, 254, 0.2);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: #4d2be6;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .conversions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .conversion-card {
+            background-color: var(--light-card);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        body.dark-mode .conversion-card {
+            background-color: var(--dark-card);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-border);
+        }
+
+        body.dark-mode .card-header {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .units-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .imperial, .metric {
+            flex: 1;
+        }
+
+        .unit-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--light-border);
+        }
+
+        body.dark-mode .unit-title {
+            border-bottom-color: var(--dark-border);
+        }
+
+        .unit-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 10px 0;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .unit-label {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        body.dark-mode .unit-label {
+            color: #aaa;
+        }
+
+        .separator {
+            width: 2px;
+            background-color: var(--light-border);
+            align-self: stretch;
+            margin: 0 10px;
+        }
+
+        body.dark-mode .separator {
+            background-color: var(--dark-border);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        body.dark-mode footer {
+            color: #aaa;
+        }
+
+        @media (max-width: 768px) {
+            .input-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .units-container {
+                flex-direction: column;
+            }
+            
+            .separator {
+                width: 100%;
+                height: 2px;
+                margin: 15px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Unit Converter</h1>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </header>
+
+        <div class="converter-container">
+            <div class="input-section">
+                <div class="input-group">
+                    <input type="number" id="inputValue" placeholder="Enter a value to convert" min="0" step="any">
+                    <button id="convertBtn">
+                        <i class="fas fa-exchange-alt"></i> Convert
+                    </button>
+                </div>
+            </div>
+
+            <div class="conversions-container">
+                <!-- Length Card -->
+                <div class="conversion-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Length</h2>
+                    </div>
+                    <div class="units-container">
+                        <div class="imperial">
+                            <div class="unit-title">Imperial</div>
+                            <div class="unit-value" id="lengthImperial">0.000</div>
+                            <div class="unit-label">inches</div>
+                        </div>
+                        <div class="separator"></div>
+                        <div class="metric">
+                            <div class="unit-title">Metric</div>
+                            <div class="unit-value" id="lengthMetric">0.000</div>
+                            <div class="unit-label">centimeters</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Volume Card -->
+                <div class="conversion-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Volume</h2>
+                    </div>
+                    <div class="units-container">
+                        <div class="imperial">
+                            <div class="unit-title">Imperial</div>
+                            <div class="unit-value" id="volumeImperial">0.000</div>
+                            <div class="unit-label">gallons</div>
+                        </div>
+                        <div class="separator"></div>
+                        <div class="metric">
+                            <div class="unit-title">Metric</div>
+                            <div class="unit-value" id="volumeMetric">0.000</div>
+                            <div class="unit-label">liters</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mass Card -->
+                <div class="conversion-card">
+                    <div class="card-header">
+                        <h2 class="card-title">Mass</h2>
+                    </div>
+                    <div class="units-container">
+                        <div class="imperial">
+                            <div class="unit-title">Imperial</div>
+                            <div class="unit-value" id="massImperial">0.000</div>
+                            <div class="unit-label">pounds</div>
+                        </div>
+                        <div class="separator"></div>
+                        <div class="metric">
+                            <div class="unit-title">Metric</div>
+                            <div class="unit-value" id="massMetric">0.000</div>
+                            <div class="unit-label">kilograms</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Unit Converter &copy; 2026 | Imperial ↔ Metric Conversions</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const themeToggle = document.getElementById('themeToggle');
+        const convertBtn = document.getElementById('convertBtn');
+        const inputValue = document.getElementById('inputValue');
+        
+        // Conversion result elements
+        const lengthImperial = document.getElementById('lengthImperial');
+        const lengthMetric = document.getElementById('lengthMetric');
+        const volumeImperial = document.getElementById('volumeImperial');
+        const volumeMetric = document.getElementById('volumeMetric');
+        const massImperial = document.getElementById('massImperial');
+        const massMetric = document.getElementById('massMetric');
+        
+        // Theme toggle functionality
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+        
+        // Conversion functions
+        function convertLength(value) {
+            // Convert to inches (imperial) and centimeters (metric)
+            const inches = value;
+            const centimeters = value * 2.54;
+            return { imperial: inches, metric: centimeters };
+        }
+        
+        function convertVolume(value) {
+            // Convert to gallons (imperial) and liters (metric)
+            const gallons = value;
+            const liters = value * 3.78541;
+            return { imperial: gallons, metric: liters };
+        }
+        
+        function convertMass(value) {
+            // Convert to pounds (imperial) and kilograms (metric)
+            const pounds = value;
+            const kilograms = value * 0.453592;
+            return { imperial: pounds, metric: kilograms };
+        }
+        
+        // Format number to 3 decimal places
+        function formatNumber(num) {
+            return parseFloat(num.toFixed(3));
+        }
+        
+        // Perform conversions
+        function performConversions() {
+            const value = parseFloat(inputValue.value);
+            
+            // Handle invalid input
+            if (isNaN(value) || value < 0) {
+                alert("Please enter a valid positive number");
+                return;
+            }
+            
+            // Length conversion
+            const length = convertLength(value);
+            lengthImperial.textContent = formatNumber(length.imperial);
+            lengthMetric.textContent = formatNumber(length.metric);
+            
+            // Volume conversion
+            const volume = convertVolume(value);
+            volumeImperial.textContent = formatNumber(volume.imperial);
+            volumeMetric.textContent = formatNumber(volume.metric);
+            
+            // Mass conversion
+            const mass = convertMass(value);
+            massImperial.textContent = formatNumber(mass.imperial);
+            massMetric.textContent = formatNumber(mass.metric);
+        }
+        
+        // Event listeners
+        convertBtn.addEventListener('click', performConversions);
+        inputValue.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                performConversions();
+            }
+        });
+        
+        // Initialize with sample value
+        window.addEventListener('load', () => {
+            inputValue.value = '1';
+            performConversions();
+        });
+    </script>
+</body>
+</html>
