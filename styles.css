@@ -20,6 +20,25 @@ body {
     font-size: 2rem;
   }
 
+  /*
+  button {
+    background: #5F3BFE;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 7px;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  } */
+/*
+  input {
+
+  } */
+
   .categories-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -49,11 +68,116 @@ body {
     margin: 0;
   }
 
+/* Module view container */
+#module-view {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  align-items: center;
+}
+
+/* Module title */
+#module-view h2 {
+  color: #5F3BFE;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+/* Input field */
+#input-value {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 1.1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  transition: border-color 0.2s;
+}
+
+#input-value:focus {
+  outline: none;
+  border-color: #5F3BFE;
+}
+
+/* Conversion result layout */
+.conversion-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  width: 100%;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-bottom: 25px;
+}
+
+/* Imperial / Metric value display */
+#imperial-value,
+#metric-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Units label */
+#imperial-unit,
+#metric-unit {
+  display: block;
+  color: #777;
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+/* Separator */
+.separator {
+  font-size: 1.5rem;
+  color: #5F3BFE;
+  font-weight: bold;
+  padding: 0 15px;
+}
+
   #back-btn {
-  background: none;
-  border: none;
+  
+  padding: 14px;
+  background: White;
+  border: 1px solid #5F3BFE;
+  border-radius: 12px;
   font-size: 1.2rem;
-  margin-bottom: 15px;
+  margin: 15px;
   cursor: pointer;
   color: #5F3BFE;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#back-btn:hover {
+  text-decoration: underline;
+}
+
+/* Convert button */
+#convert-btn {
+  width: 106%;
+  padding: 14px;
+  margin: 5px;
+  background: #5F3BFE;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#convert-btn:hover {
+  background: #4d2be6;
+}
+
+#loop-back {
+    display: flex;
+    justify-content:flex-end;
+    align-items:flex-end;
 }
