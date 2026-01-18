@@ -2,6 +2,8 @@
   const homeView = document.getElementById('home-view');
   const moduleView = document.getElementById('module-view');
 
+  let currentCategory = null;
+
   // Add click listeners to all cards
   document.querySelectorAll('.category-card').forEach(card => {
     card.addEventListener('click', () => {
@@ -14,6 +16,8 @@
     // Hide home, show module
     homeView.style.display = 'none';
     moduleView.style.display = 'block';
+
+    currentCategory = category;
 
     // Generate shared UI (back button + title)
     const title = category.charAt(0).toUpperCase() + category.slice(1) + ' Converter';
@@ -88,12 +92,73 @@
     homeView.style.display = 'block';
     });
 
-    // 6. Attach category-specific logic
-    if (category === 'length' || category === 'mass' /* etc */) {
+    // Attach category-specific logic
+  /*  if (category === 'length' || category === 'mass' ...) {
         document.getElementById('convert-btn')?.addEventListener('click', () => {
             convertValue(category);
         });
-    }
+    } */
+
+    //Calling the conver value function with mouse click
+    document.getElementById('convert-btn').addEventListener('click', convertValue);
+
+    // Calling the conver value function by pressing the enter button
+    document.getElementById('input-value').addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') convertValue();
+    });
   }
 
+  function convertValue() {
+    // 1. Get input value
+    const inputEl = document.getElementById('input-value');
+    const inputValue = parseFloat(inputEl.value);
   
+    // 2. Validate
+    if (isNaN(inputValue) || inputValue < 0) {
+            alert("Please enter a valid positive number");
+        return;
+    }
+
+    // 3. Choose converter based on current category
+    let result;
+    switch (currentCategory) {
+        case 'length':
+            result = convertLength(inputValue);
+        break;
+        case 'mass':
+            result = convertMass(inputValue);
+        break;
+        case 'volume':
+            result = convertVolume(inputValue);
+        break;
+        default:
+            console.error("Unknown category:", currentCategory);
+        return;
+    }
+
+    // 4. Update the DOM
+    document.getElementById('imperial-value').textContent = result.imperial.toFixed(3);
+    document.getElementById('metric-value').textContent = result.metric.toFixed(3);
+  }
+
+  //Converting the length value
+  function convertLength(value) {
+        // Assume input is in inches → convert to cm
+        const imperial = value;
+        const metric = value * 2.54;
+        return { imperial, metric };
+  }
+
+  function convertMass(value) {
+     // Assume input is in pounds → convert to kg
+    const imperial = value;
+    const metric = value * 0.453592;
+    return { imperial, metric };
+  }
+
+  function convertVolume(value) {
+    // Assume input is in gallons → convert to liters
+   const imperial = value;
+   const metric = value * 3.78541;
+   return { imperial, metric };
+  }
