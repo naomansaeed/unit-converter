@@ -143,22 +143,22 @@
 
   //Converting the length value
   function convertLength(value) {
-        // Assume input is in inches → convert to cm
-        const imperial = value;
+        // Do not Assume input is in inches → convert to cm
+        const imperial = value/2.54 ;
         const metric = value * 2.54;
         return { imperial, metric };
   }
 
   function convertMass(value) {
-     // Assume input is in pounds → convert to kg
-    const imperial = value;
+     // Do not Assume input is in pounds → convert to kg
+    const imperial = value *2.20462;
     const metric = value * 0.453592;
     return { imperial, metric };
   }
 
   function convertVolume(value) {
-    // Assume input is in gallons → convert to liters
-   const imperial = value;
+    // Do not Assume input is in gallons → convert to liters
+   const imperial = value / 3.78541;
    const metric = value * 3.78541;
    return { imperial, metric };
   }
